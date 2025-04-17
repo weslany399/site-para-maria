@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Para Maria</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      overflow: hidden;
+    }
+
+    video.bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 40px;
+      background-color: rgba(0, 0, 0, 0.6);
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .message-container {
+      display: none;
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .message-container.active {
+      display: block;
+    }
+
+    button {
+      background-color: #f472b6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- VÍDEO DE FUNDO COM ÁUDIO -->
+  <video class="bg-video" autoplay loop controls playsinline id="bg-video">
+    <source src="video.mp4" type="video/mp4" />
+    Seu navegador não suporta vídeos HTML5.
+  </video>
+
+  <div class="container" id="message-section">
+    <!-- Estrofes serão inseridas pelo JS -->
+  </div>
+
+  <script>
+    const estrofes = [
+      "Querida Maria",
+      "Bem como começar né pequenah 😮‍💨",
+      "Eu queria poder colocar em palavras tudo o que sinto neste momento. Sei que palavras nem sempre são suficientes...",
+      "Mas quero poder expressar tudo aquilo que não foi dito a você com sinceridade.",
+      "A nossa amizade foi construída com muito afeto, tenho tantas lembranças boas e momentos que guardarei com muito carinho no meu coração. Desde a nossa juventude até os dias de hoje em que compartilhamos tantas coisas, a nossa conexão sempre foi forte e verdadeira, mesmo quando a vida nos colocou em direções diferentes.",
+      "Sei que tivemos também nossas fases ruins, onde enfrentamos desafios, dificuldades, indiferenças, descobertas, tivemos também momentos de raiva, mas lembro-me que sempre conseguíamos superar tudo juntas, a nossa amizade sempre conseguia se renovar e seguir em frente.",
+      "E hoje eu entendo a sua decisão de se afastar, sei que foi algo que você fez para preservar o que é mais importante para você nesse momento da sua vida, e eu respeito isso profundamente.",
+      "Eu entendo que a sua decisão não é sobre mim, é sobre você, e é sobre o que é melhor para a sua vida agora. E eu quero que você saiba que, mesmo com a distância, o carinho que tenho por você nunca vai diminuir, e eu não estive do seu lado por interesses pessoais, afinal foram 6 anos, eu não seria um personagem todo esse tempo.",
+      "As minhas brincadeiras não foram com más intenções, o meu jeito de te olhar a última semana em que nos vimos, foi de admiração, ver você se tornar mãe era algo muito importante pra mim, algo que sonhei acompanhar um Dia, é uma pena ter acabado assim, o que fui, fui com intensidade em tudo, fui com amor, fui com lealdade, foi real o que vivemos juntas, os risos, as confidências, os conselhos e até as nossas divergências, tudo isso fez parte da nossa história...",
+      "Eu nunca quis te causar mal nenhum, e de alguma forma, por mais que minhas intenções fossem boas, posso ter te magoado ou ter feito você sentir que houve algo errado entre nós.",
+      "Não foi minha intenção te pressionar ou te deixar em uma situação desconfortável. Não precisava ter sido tão dura com as suas palavras, porque pode ter a certeza de que a última coisa que eu queria era fazer algo que fosse contra o seu bem-estar e a sua felicidade. Errei algumas vezes, sou humana, tentando corrigir meus erros.",
+      "Pequenah, você não precisa se culpar por um erro do passado que não foi só seu. O passado deve ser superado, e levado como um aprendizado. E Deus é um Deus que perdoa por completo, não tenha dúvidas. Ele jamais vai te fazer se sentir culpada e triste pelo seu pecado. Se você se sentir assim pode ter certeza que não vem dele, porque Deus é amor, é misericordioso. Não tenha dúvida que Ele te ama e quer te ajudar. Ele corrige, mas o jugo dEle não é pesado para os que o amam e o adoram. Também não tenha dúvidas de que a mudança verdadeira existe.",
+      "Vejo que você será uma ótima mãe, cheia de aprendizados para ensinar à sua princesinha. Aproveite a infância dela, e viva cada momento ao lado dela, porque é único! Ter uma mãe presente faz toda a diferença na vida de uma menina. Logo logo serei mamãe também.",
+      "Fico feliz em ter sido ponte para o destino que você vive hoje. Se eu nunca tivesse acolhido você aqui em minha casa e nunca tivesse arrumado aquele emprego pra nós naquele açougue, talvez você nunca teria conhecido as pessoas que te levaram até Rio Branco e lá conhecer seu amado. De alguma maneira, um mal momento foi para o seu bem e para que você chegasse até ele... E hoje você está aí, feliz.",
+      "Saiba que meu lar ainda é acolhedor, e eu ainda tenho o mesmo coração. Se um dia precisar de mim, jamais negarei nada a você, nem sequer uma palavra eu te negaria, e isso me define como pessoa.",
+      "Eu te desejo, de todo o coração, uma vida cheia de paz, amor e realizações. Por mais que agora estejamos em caminhos diferentes, desejo-te sabedoria no novo rumo da sua vida, para que você continue crescendo e vivendo de acordo com o que faz seu coração feliz. Que você siga com força e equilíbrio, que o futuro te traga muitas bênçãos. Viva sua vida e nunca se esqueça que tem um ombro amigo aqui independentemente de qualquer coisa.",
+      "Fiz este site especialmente só pra você❤️",
+      "Com carinho e gratidão!! Weslany"
+    ];
+
+    const container = document.getElementById("message-section");
+
+    function mostrarEstrofes() {
+      estrofes.forEach((texto, index) => {
+        const div = document.createElement("div");
+        div.className = "message-container";
+        if (index === 0) div.classList.add("active");
+
+        const p = document.createElement("p");
+        p.innerText = texto;
+        div.appendChild(p);
+
+        if (index < estrofes.length - 1) {
+          const btn = document.createElement("button");
+          btn.innerText = "Continuar";
+          btn.onclick = () => {
+            div.classList.remove("active");
+            div.nextElementSibling.classList.add("active");
+          };
+          div.appendChild(btn);
+        }
+
+        container.appendChild(div);
+      });
+    }
+
+    mostrarEstrofes();
+  </script>
+</body>
+</html>
